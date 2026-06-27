@@ -1,22 +1,66 @@
 # belegjs
 
-**JS-Bibliothek + Editor** für **Angebote, Rechnungen und Mahnungen** als PDF
-nach **DIN 5008**. Zwei Teile:
+**JS-Bibliothek + interaktiver Editor** für **Angebote, Rechnungen und Mahnungen**
+als **PDF nach DIN 5008**. Strikt typisiertes TypeScript, framework-agnostische
+Kernbibliothek, Editor mit Vite, PDF via jsPDF, Tests mit Vitest.
 
-- **Bibliothek** (`src/lib`, framework-agnostisch, TypeScript): Dokumentmodell,
-  DIN-5008-Geometrie, USt/Kleinunternehmer-Logik und ein **jsPDF-Renderer**
-  (`renderPdf(doc, config)`).
-- **Editor** (`src/app`, Vite): intuitive **Übersicht** der Dokumente und ein
-  **3-Spalten-Editor** — mittig die PDF-Vorschau bearbeiten, rechts Konfiguration
-  (Schriftart, Footer, Seitenzahl, Ausrichtung, Kleinunternehmerregelung …),
-  Inhalte (Empfänger, Positionen, Texte) editierbar. Jedes Dokument als PDF
-  herunterladbar.
+## Zwei Teile
+
+### Bibliothek (`src/lib`) — framework-agnostisch
+Reine, getestete Logik ohne DOM-Abhängigkeit:
+
+- **`model`** — Dokumentmodell (`BelegDocument`, `Address`, `Position`, `DocMeta`,
+  `DocConfig`) plus `createDocument(type, overrides)` mit sicheren Defaults.
+- **`geometry`** — DIN-5008-Maße, Formen A/B (Höhe des Anschriftfelds).
+- **`money`** — Cent-Mathematik, USt je Satz, Kleinunternehmer §19 UStG,
+  deutsche Zahlen-/Währungsformatierung (`computeTotals`, `formatEuro` …).
+- **`layout` / `documents`** — DIN-5008-Textbausteine und typabhängige Inhalte
+  (Positionstabelle, Summenblock, Notizen).
+- **`pdf`** — `documentToBlob(doc)` / `documentToDataUrl(doc)`: rendert das
+  Dokument aus seiner `DocConfig` zu einem PDF.
+- **`download`** — `downloadDocument(doc)` löst den Datei-Download aus
+  (sprechender, dateisystemsicherer Name).
+- **`store`** — reine Datenebene für mehrere Dokumente (anlegen/öffnen/
+  duplizieren/löschen).
+- **`persistence`** — Store über `localStorage` sichern/laden (defensiv:
+  fehlende Felder bekommen Defaults, kaputte Einträge werden verworfen).
+- **`demo`** — `demoDocuments()`: ein Beispielsatz (Angebot, Rechnung, Mahnung).
+
+```ts
+import { createDocument, documentToBlob } from "belegjs";
+
+const rechnung = createDocument("rechnung", {
+  recipient: { name: "Erika Muster", city: "Berlin" },
+  positions: [{ description: "Beratung", quantity: 2, unitPriceCents: 9000, taxRatePercent: 19 }],
+});
+const pdf = documentToBlob(rechnung); // → Blob, z. B. zum Speichern/Versenden
+```
+
+### Editor (`src/app`) — Vite
+Drei Spalten, lebendige Vorschau:
+
+- **Links — Übersicht:** Dokumentenliste mit Typ-Badges; anlegen, öffnen,
+  duplizieren, löschen. Empty State, wenn nichts geöffnet ist.
+- **Mitte — lebende PDF-Vorschau:** A4-„Blatt", aktualisiert sich bei jeder
+  Eingabe.
+- **Rechts — Konfiguration:** Schriftart, Footer, Seitenzahl, Ausrichtung,
+  DIN-5008-Form, Kleinunternehmerregelung; oben der PDF-Download-Button.
+
+Inhalte (Empfänger, Absender, Positionen, Texte) sind direkt editierbar. Der
+Bestand wird automatisch in `localStorage` gespeichert und überlebt den Reload.
+
+## Loslegen
+```bash
+npm install
+npm run dev       # Editor lokal starten (Vite, --host fürs LAN)
+```
+Dann die angezeigte URL öffnen (Standard http://localhost:5173).
 
 ## Entwicklung
 ```bash
-npm install
-npm test          # Vitest
-npm run build     # tsc --noEmit + vite build
-npm run dev       # Editor lokal (Vite, --host fürs LAN)
+npm test          # Vitest (alle Tests)
+npm run build     # tsc --noEmit + vite build (Produktions-Build nach dist/)
+npm run preview   # gebauten Editor lokal ausliefern
 ```
-Status: Gerüst + DIN-Geometrie stehen — siehe `docs/PROJECT_PLAN.md`.
+
+Planung & Fortschritt: `docs/PROJECT_PLAN.md` und `docs/PROGRESS.md`.

@@ -27,7 +27,7 @@ Texte) direkt editierbar. Jedes Dokument als **PDF herunterladbar**.
 - [x] M7 (#7) · Übersicht — intuitive, professionelle Dokumentenliste: anlegen/öffnen/duplizieren/löschen, Typ-Badges.
 - [x] M8 (#8) · Download — PDF je Dokument erzeugen + herunterladen.
 - [x] M9 (#9) · Persistenz + Demo — localStorage-Store + Demo-Dokumente, „Neues Dokument"-Flow. Tests.
-- [ ] M10 (#10) · Politur — responsive, Empty States, professionelles Design, README (Lib + App), Build/Preview.
+- [x] M10 (#10) · Politur — responsive, Empty States, professionelles Design, README (Lib + App), Build/Preview.
 
 ## Done-Log
 Siehe `docs/PROGRESS.md`.

@@ -226,6 +226,28 @@ small { color: var(--ink-3); font-weight: 400; }
 .position__remove { margin-top: 6px; width: 100%; }
 .position__add { width: 100%; }
 
+/* Empty state (main area when no document is open) */
+.empty-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.empty-state[hidden] { display: none; }
+.empty-state__card {
+  max-width: 380px;
+  text-align: center;
+  padding: 36px 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(26, 34, 48, .06);
+}
+.empty-state__card h2 { margin: 0 0 8px; font-size: 18px; }
+.empty-state__hint { margin: 0 0 20px; color: var(--ink-3); font-size: 14px; }
+.empty-state__actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
 /* Live PDF preview (middle column) */
 .preview {
   display: flex;

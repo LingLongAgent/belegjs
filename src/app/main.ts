@@ -13,6 +13,7 @@ import {
 } from "../lib";
 import type { BelegDocument, DocType, DocumentStore } from "../lib";
 import { createEditor } from "./editor";
+import { createEmptyState } from "./emptyState";
 import { createOverview } from "./overview";
 
 /**
@@ -75,7 +76,14 @@ if (app) {
     },
   });
 
-  shell.append(overview.element, editorWrap);
+  // Shown in the main area when no document is open (e.g. all deleted).
+  const emptyState = createEmptyState((type) => {
+    store = addDocument(store, type);
+    syncActive();
+  });
+  emptyState.hidden = true;
+
+  shell.append(overview.element, editorWrap, emptyState);
   app.appendChild(shell);
 
   /** Reflect the current store: load the active doc into the editor + redraw the list. */
@@ -83,9 +91,11 @@ if (app) {
     const active = activeDocument();
     if (active) {
       editorWrap.hidden = false;
+      emptyState.hidden = true;
       editor.setDocument(active);
     } else {
       editorWrap.hidden = true;
+      emptyState.hidden = false;
     }
     overview.render(store);
     saveStore(store);
