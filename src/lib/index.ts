@@ -7,4 +7,6 @@ export * from "./documents";
 export * from "./pdf";
 export * from "./download";
 export * from "./store";
+export * from "./persistence";
+export * from "./demo";
 export const VERSION = "0.1.0";
