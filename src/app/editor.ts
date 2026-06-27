@@ -44,6 +44,8 @@ export interface EditorOptions {
   document: BelegDocument;
   /** Called after every change with the updated document. */
   onChange?: (doc: BelegDocument) => void;
+  /** Called when the user clicks „PDF herunterladen" with the current document. */
+  onDownload?: (doc: BelegDocument) => void;
   /** Preview factory; defaults to the real PDF preview. Injected in tests. */
   previewFactory?: () => PreviewController;
 }
@@ -402,6 +404,15 @@ export function createEditor(options: EditorOptions): EditorController {
 
   function renderConfig(): void {
     configColumn.replaceChildren();
+
+    // Primary action sits above the settings so it is always reachable.
+    const downloadButton = document.createElement("button");
+    downloadButton.type = "button";
+    downloadButton.className = "editor__download";
+    downloadButton.textContent = "📄 PDF herunterladen";
+    downloadButton.addEventListener("click", () => options.onDownload?.(doc));
+    configColumn.appendChild(downloadButton);
+
     const host = section("Konfiguration");
 
     host.appendChild(field("Schriftart", selectInput(FONT_OPTIONS, doc.config.fontFamily, (value) => {

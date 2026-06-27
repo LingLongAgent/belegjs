@@ -25,7 +25,7 @@ Texte) direkt editierbar. Jedes Dokument als **PDF herunterladbar**.
 - [x] M5 (#5) · Live-Vorschau — A4-„Papier"-Vorschau (skaliert), aktualisiert sich aus Modell+Config (mittlere Spalte). Tests wo möglich.
 - [x] M6 (#6) · 3-Spalten-Editor — Mitte Vorschau, rechts Config-Panel (Schrift/Footer/Seitenzahl/Ausrichtung/Kleinunternehmer), Inhalte editierbar (Empfänger, Positionen, Texte), reaktiver State.
 - [x] M7 (#7) · Übersicht — intuitive, professionelle Dokumentenliste: anlegen/öffnen/duplizieren/löschen, Typ-Badges.
-- [ ] M8 (#8) · Download — PDF je Dokument erzeugen + herunterladen.
+- [x] M8 (#8) · Download — PDF je Dokument erzeugen + herunterladen.
 - [ ] M9 (#9) · Persistenz + Demo — localStorage-Store + Demo-Dokumente, „Neues Dokument"-Flow. Tests.
 - [ ] M10 (#10) · Politur — responsive, Empty States, professionelles Design, README (Lib + App), Build/Preview.
 

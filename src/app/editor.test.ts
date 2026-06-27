@@ -162,3 +162,23 @@ describe("createEditor — lifecycle", () => {
     expect(preview.destroy).toHaveBeenCalled();
   });
 });
+
+describe("createEditor — Download", () => {
+  it("ruft onDownload mit dem aktuellen Dokument, wenn der Button geklickt wird", () => {
+    const preview = fakePreview();
+    const onDownload = vi.fn();
+    const editor = createEditor({
+      document: createDocument("rechnung", { meta: { number: "RE-9", date: "" } }),
+      previewFactory: () => preview,
+      onDownload,
+    });
+    document.body.replaceChildren(editor.element);
+
+    const button = editor.element.querySelector<HTMLButtonElement>(".editor__download");
+    expect(button).not.toBeNull();
+    button!.click();
+
+    expect(onDownload).toHaveBeenCalledOnce();
+    expect(onDownload.mock.calls[0][0].meta.number).toBe("RE-9");
+  });
+});

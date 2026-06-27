@@ -3,6 +3,7 @@ import {
   addDocument,
   createDocument,
   createStore,
+  downloadDocument,
   duplicateDocument,
   findDocument,
   openDocument,
@@ -63,6 +64,7 @@ if (app) {
   editorWrap.className = "shell__editor";
   const editor = createEditor({
     document: activeDocument() ?? demoInvoice(),
+    onDownload: (doc) => downloadDocument(doc),
     onChange: (doc) => {
       // Keep the store entry current so the overview reflects title/number edits.
       const index = store.documents.findIndex((entry) => entry.id === doc.id);
