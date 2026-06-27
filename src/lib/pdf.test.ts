@@ -41,6 +41,48 @@ describe("renderLetter", () => {
     expect(() => renderLetter(createDocument("angebot"))).not.toThrow();
   });
 
+  it("renders a Rechnung with a position table and totals", () => {
+    const withPositions = sampleInvoice({
+      dueDate: "2026-07-14",
+      positions: [
+        { description: "Beratung", quantity: 2, unitPriceCents: 9000, taxRatePercent: 19 },
+        {
+          description:
+            "Eine sehr lange Positionsbeschreibung, die im Tabellenfeld umbrochen werden muss",
+          quantity: 1,
+          unitPriceCents: 5000,
+          taxRatePercent: 7,
+        },
+      ],
+    });
+    expect(() => renderLetter(withPositions)).not.toThrow();
+  });
+
+  it("renders an Angebot with positions and a Kleinunternehmer table", () => {
+    const angebot = createDocument("angebot", {
+      validUntil: "2026-07-31",
+      config: { ...createDocument("angebot").config, kleinunternehmer: true },
+      positions: [
+        { description: "Leistung", quantity: 3, unitPriceCents: 4000, taxRatePercent: 0 },
+      ],
+    });
+    expect(() => renderLetter(angebot)).not.toThrow();
+  });
+
+  it("renders a Mahnung with fee, reference and deadline", () => {
+    const mahnung = createDocument("mahnung", {
+      meta: { number: "MA-2026-0001", date: "2026-06-27" },
+      mahnstufe: 1,
+      mahngebuehrCents: 500,
+      bezugsRechnung: "RE-2026-0001",
+      dueDate: "2026-07-10",
+      positions: [
+        { description: "Offener Rechnungsbetrag", quantity: 1, unitPriceCents: 26770, taxRatePercent: 19 },
+      ],
+    });
+    expect(() => renderLetter(mahnung)).not.toThrow();
+  });
+
   it("honours every config flag without throwing", () => {
     const justified = sampleInvoice({
       config: {

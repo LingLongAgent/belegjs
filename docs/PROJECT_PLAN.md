@@ -21,7 +21,7 @@ Texte) direkt editierbar. Jedes Dokument als **PDF herunterladbar**.
 - [x] M1 (#1) · Dokumentmodell + Config — Typen für Angebot/Rechnung/Mahnung (Absender, Empfänger, Positionen, Meta) + DocConfig (Schrift, Footer, Seitenzahl, Ausrichtung, Kleinunternehmer, Form). Tests.
 - [x] M2 (#2) · USt & Formatierung — Cent-Beträge, USt je Satz, Kleinunternehmer §19 (keine USt + Hinweis), deutsche Zahlen/Währung. Tests.
 - [x] M3 (#3) · PDF-Renderer (jsPDF) — DIN-5008-Brief (Anschriftfeld, Infoblock, Betreff, Fließtext, Footer/Seitenzahl, Ausrichtung, Schriftart) aus DocConfig → Blob/DataURL. Tests.
-- [ ] M4 (#4) · Dokumenttypen — Angebot (Positionen+Gültigkeit), Rechnung (Positionen+Summen+Zahlungsziel), Mahnung (Rechnungsbezug+Stufe+Gebühr+Frist). Tests.
+- [x] M4 (#4) · Dokumenttypen — Angebot (Positionen+Gültigkeit), Rechnung (Positionen+Summen+Zahlungsziel), Mahnung (Rechnungsbezug+Stufe+Gebühr+Frist). Tests.
 - [ ] M5 (#5) · Live-Vorschau — A4-„Papier"-Vorschau (skaliert), aktualisiert sich aus Modell+Config (mittlere Spalte). Tests wo möglich.
 - [ ] M6 (#6) · 3-Spalten-Editor — Mitte Vorschau, rechts Config-Panel (Schrift/Footer/Seitenzahl/Ausrichtung/Kleinunternehmer), Inhalte editierbar (Empfänger, Positionen, Texte), reaktiver State.
 - [ ] M7 (#7) · Übersicht — intuitive, professionelle Dokumentenliste: anlegen/öffnen/duplizieren/löschen, Typ-Badges.
