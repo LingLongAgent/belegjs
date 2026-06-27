@@ -1,14 +1,26 @@
-import { VERSION, createDocument } from "../lib";
-import type { BelegDocument } from "../lib";
+import {
+  VERSION,
+  addDocument,
+  createDocument,
+  createStore,
+  duplicateDocument,
+  findDocument,
+  openDocument,
+  removeDocument,
+} from "../lib";
+import type { BelegDocument, DocType, DocumentStore } from "../lib";
 import { createEditor } from "./editor";
+import { createOverview } from "./overview";
 
 /**
- * Editor bootstrap. M6 mounts the full 3-column editor (content · live preview ·
- * config) on a demo invoice so `npm run dev` opens a real, editable document.
- * The document overview, download and persistence follow in M7–M9.
+ * App bootstrap. M7 adds the document overview (left column): a store of several
+ * documents the user can create, open, duplicate and delete, with the active one
+ * shown in the 3-column editor (content · live preview · config). Download (M8),
+ * persistence (M9) and final polish (M10) follow.
  */
 function demoInvoice(): BelegDocument {
   return createDocument("rechnung", {
+    id: "rechnung-1",
     sender: { name: "Ling Long", street: "Werkstraße 2", zip: "20095", city: "Hamburg" },
     recipient: {
       company: "Muster GmbH",
@@ -37,6 +49,64 @@ if (app) {
     <p class="muted">DIN-5008-Belege — Angebot · Rechnung · Mahnung</p>
   </header>`;
 
-  const editor = createEditor({ document: demoInvoice() });
-  app.appendChild(editor.element);
+  let store: DocumentStore = createStore([demoInvoice()]);
+
+  function activeDocument(): BelegDocument | undefined {
+    return store.activeId ? findDocument(store, store.activeId) : undefined;
+  }
+
+  const shell = document.createElement("div");
+  shell.className = "shell";
+
+  // The editor edits the active document; when none is open we hide it.
+  const editorWrap = document.createElement("div");
+  editorWrap.className = "shell__editor";
+  const editor = createEditor({
+    document: activeDocument() ?? demoInvoice(),
+    onChange: (doc) => {
+      // Keep the store entry current so the overview reflects title/number edits.
+      const index = store.documents.findIndex((entry) => entry.id === doc.id);
+      if (index >= 0) {
+        store.documents[index] = doc;
+        overview.render(store);
+      }
+    },
+  });
+  editorWrap.appendChild(editor.element);
+
+  const overview = createOverview({
+    onCreate: (type: DocType) => {
+      store = addDocument(store, type);
+      syncActive();
+    },
+    onOpen: (id) => {
+      store = openDocument(store, id);
+      syncActive();
+    },
+    onDuplicate: (id) => {
+      store = duplicateDocument(store, id);
+      syncActive();
+    },
+    onDelete: (id) => {
+      store = removeDocument(store, id);
+      syncActive();
+    },
+  });
+
+  shell.append(overview.element, editorWrap);
+  app.appendChild(shell);
+
+  /** Reflect the current store: load the active doc into the editor + redraw the list. */
+  function syncActive(): void {
+    const active = activeDocument();
+    if (active) {
+      editorWrap.hidden = false;
+      editor.setDocument(active);
+    } else {
+      editorWrap.hidden = true;
+    }
+    overview.render(store);
+  }
+
+  syncActive();
 }
