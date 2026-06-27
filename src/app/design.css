@@ -1,3 +1,8 @@
 :root{--bg:#f6f7f9;--surface:#fff;--ink:#1a2230;--ink-3:#8893a1;--accent:#3a63f6;--line:#e6e9ee}
 *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
 .shell{max-width:1240px;margin:40px auto;padding:24px}.muted{color:var(--ink-3)}small{color:var(--ink-3);font-weight:400}
+
+/* Live PDF preview (editor middle column) */
+.preview{display:flex;justify-content:center;padding:24px;background:var(--bg);overflow:auto}
+.preview__sheet{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 24px rgba(26,34,48,.10);overflow:hidden}
+.preview__pdf{display:block;width:100%;height:100%;border:0}
