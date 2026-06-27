@@ -1,8 +1,136 @@
-:root{--bg:#f6f7f9;--surface:#fff;--ink:#1a2230;--ink-3:#8893a1;--accent:#3a63f6;--line:#e6e9ee}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-.shell{max-width:1240px;margin:40px auto;padding:24px}.muted{color:var(--ink-3)}small{color:var(--ink-3);font-weight:400}
+:root {
+  --bg: #f6f7f9;
+  --surface: #fff;
+  --ink: #1a2230;
+  --ink-2: #4a566b;
+  --ink-3: #8893a1;
+  --accent: #3a63f6;
+  --accent-soft: #eef2ff;
+  --line: #e6e9ee;
+  --radius: 8px;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+.muted { color: var(--ink-3); }
+small { color: var(--ink-3); font-weight: 400; }
 
-/* Live PDF preview (editor middle column) */
-.preview{display:flex;justify-content:center;padding:24px;background:var(--bg);overflow:auto}
-.preview__sheet{width:100%;max-width:620px;background:var(--surface);border:1px solid var(--line);border-radius:4px;box-shadow:0 6px 24px rgba(26,34,48,.10);overflow:hidden}
-.preview__pdf{display:block;width:100%;height:100%;border:0}
+#app { display: flex; flex-direction: column; height: 100vh; }
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+.topbar h1 { margin: 0; font-size: 20px; }
+.topbar p { margin: 0; font-size: 13px; }
+
+/* 3-column editor */
+.editor {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 340px 1fr 320px;
+  min-height: 0;
+}
+.editor__col { overflow-y: auto; padding: 20px; }
+.editor__col--content { border-right: 1px solid var(--line); background: var(--surface); }
+.editor__col--config { border-left: 1px solid var(--line); background: var(--surface); }
+.editor__col--preview { background: var(--bg); padding: 0; display: flex; }
+
+.editor__section { margin-bottom: 24px; }
+.editor__section h3 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+}
+
+.field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.field__label { font-size: 12px; color: var(--ink-2); }
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  width: 100%;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field textarea { resize: vertical; }
+
+.field--check { flex-direction: row; align-items: center; gap: 8px; }
+.field--check input { width: auto; }
+.field--check .field__label { font-size: 14px; color: var(--ink); }
+
+.field-row { display: flex; gap: 10px; }
+.field-row .field { flex: 1; }
+
+.position {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  margin-bottom: 10px;
+  background: var(--bg);
+}
+.btn {
+  font: inherit;
+  font-size: 13px;
+  padding: 8px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+.btn:hover { filter: brightness(1.05); }
+.btn--ghost {
+  background: transparent;
+  color: var(--ink-3);
+  border-color: var(--line);
+}
+.position__remove { margin-top: 6px; width: 100%; }
+.position__add { width: 100%; }
+
+/* Live PDF preview (middle column) */
+.preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 24px;
+  overflow: auto;
+}
+.preview__sheet {
+  width: 100%;
+  max-width: 620px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 0 6px 24px rgba(26, 34, 48, .10);
+  overflow: hidden;
+}
+.preview__pdf { display: block; width: 100%; height: 100%; border: 0; }
+
+@media (max-width: 980px) {
+  .editor { grid-template-columns: 1fr; }
+  .editor__col { max-height: none; }
+}

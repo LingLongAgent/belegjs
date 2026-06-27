@@ -1,11 +1,11 @@
 import { VERSION, createDocument } from "../lib";
 import type { BelegDocument } from "../lib";
-import { createPreview } from "./preview";
+import { createEditor } from "./editor";
 
 /**
- * Editor bootstrap. M5 wires the live PDF preview (middle column) to a demo
- * document so `npm run dev` shows a real, rendered letter. The surrounding
- * 3-column editor and overview are added in M6/M7.
+ * Editor bootstrap. M6 mounts the full 3-column editor (content · live preview ·
+ * config) on a demo invoice so `npm run dev` opens a real, editable document.
+ * The document overview, download and persistence follow in M7–M9.
  */
 function demoInvoice(): BelegDocument {
   return createDocument("rechnung", {
@@ -17,7 +17,8 @@ function demoInvoice(): BelegDocument {
       zip: "10115",
       city: "Berlin",
     },
-    intro: "Sehr geehrte Frau Muster,\n\nvielen Dank für Ihren Auftrag. Wir berechnen Ihnen die folgenden Leistungen.",
+    intro:
+      "Sehr geehrte Frau Muster,\n\nvielen Dank für Ihren Auftrag. Wir berechnen Ihnen die folgenden Leistungen.",
     outro: "Mit freundlichen Grüßen\nLing Long",
     meta: { number: "RE-2026-0001", date: "2026-06-27" },
     dueDate: "2026-07-14",
@@ -31,12 +32,11 @@ function demoInvoice(): BelegDocument {
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (app) {
-  app.innerHTML = `<main class="shell">
+  app.innerHTML = `<header class="topbar">
     <h1>belegjs <small>v${VERSION}</small></h1>
-    <p class="muted">Lebende PDF-Vorschau — der 3-Spalten-Editor folgt.</p>
-  </main>`;
+    <p class="muted">DIN-5008-Belege — Angebot · Rechnung · Mahnung</p>
+  </header>`;
 
-  const preview = createPreview();
-  app.querySelector(".shell")!.appendChild(preview.element);
-  preview.update(demoInvoice());
+  const editor = createEditor({ document: demoInvoice() });
+  app.appendChild(editor.element);
 }
