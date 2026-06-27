@@ -1,0 +1,3 @@
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1a2230;--ink-3:#8893a1;--accent:#3a63f6;--line:#e6e9ee}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.shell{max-width:1240px;margin:40px auto;padding:24px}.muted{color:var(--ink-3)}small{color:var(--ink-3);font-weight:400}

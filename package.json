@@ -1,0 +1,15 @@
+{
+  "name": "belegjs",
+  "version": "0.1.0",
+  "description": "Angebote, Rechnungen & Mahnungen als PDF nach DIN 5008 — Bibliothek + Editor.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "test": "vitest run",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": { "jspdf": "^2.5.1" },
+  "devDependencies": { "typescript": "^5.5.0", "vite": "^5.4.0", "vitest": "^2.1.0" }
+}
